@@ -1,0 +1,6 @@
+1. Further testing of script on HTB where I won't get into trouble.
+2. Push limits of PDF document creation. Create new page once reaching a low y_position value.
+3. Add further scan techniques sV sC etc and plan to modify results based on scan technique used.
+4. Use regex and exceptions to handle malformed input.
+5. Possibly make it not look so boring.
+6. Think of more ideas to implement to make it useful for documenting scanned results:)
