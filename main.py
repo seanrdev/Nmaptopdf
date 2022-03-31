@@ -20,13 +20,7 @@ def topdf(docname, strings):
     doc.save()
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("host", help="IP address or hostname of target")
-    parser.add_argument("-p", "--port", help="Ports to scan correct formats:"
-                                             "22,80,443 or 22-443")
-    parser.add_argument("--pdfname", help="Name of PDF file to save as")
-    args = parser.parse_args()
+def conduct_scan(args):
     scan = nmap.PortScanner()
     scan.scan(args.host, args.port)
     string_list = []
@@ -42,8 +36,21 @@ if __name__ == '__main__':
                 print('port: {}\tstate: {}\nname: {}'.format(port, scan[host][protocol][port]['state'],
                                                              scan[host][protocol][port]['name']))
                 string_list.append(
-                    'Port: {}   State: {}   Service Name: {}  Product: {}   Service Details: {}'.format(port,scan[host][protocol][port]['state'],
+                    'Port: {}   State: {}   Service Name: {}  Product: {}   Service Details: {}'.format(port,
+                                                                                                        scan[host][protocol][port]['state'],
                                                                                                         scan[host][protocol][port]['name'],
-                                                                                                        scan[host][protocol][port]['product'],
-                                                                                                        scan[host][protocol][port]['extrainfo']))
+                                                                                                        scan[host][protocol][port][
+                                                                                                            'product'],
+                                                                                                        scan[host][protocol][port][
+                                                                                                            'extrainfo']))
                 topdf('test', string_list)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("host", help="IP address or hostname of target")
+    parser.add_argument("-p", "--port", help="Ports to scan correct formats:"
+                                             "22,80,443 or 22-443")
+    parser.add_argument("--pdfname", help="Name of PDF file to save as")
+    arguments = parser.parse_args()
+    conduct_scan(arguments)
