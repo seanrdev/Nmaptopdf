@@ -1,6 +1,7 @@
 import nmap
 import argparse
 from reportlab.pdfgen import canvas as cv
+import re
 
 
 def topdf(docname, strings):
@@ -46,6 +47,16 @@ def conduct_scan(args):
                 topdf('test', string_list)
 
 
+def regexcheck(portnumber):
+    pattern_one = re.compile("([\d]{1,5},)+[\d]{1,5}$")
+    pattern_two = re.compile("[\d]{1,5}-[\d]{1,5}$")
+    pattern_three = re.compile("^[\d]{1,5}$")
+    if pattern_one.fullmatch(portnumber) or pattern_two.fullmatch(portnumber) or pattern_three.fullmatch(portnumber):
+        return True
+    else:
+        return False
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("host", help="IP address or hostname of target")
@@ -53,4 +64,5 @@ if __name__ == '__main__':
                                              "22,80,443 or 22-443")
     parser.add_argument("--pdfname", help="Name of PDF file to save as")
     arguments = parser.parse_args()
-    conduct_scan(arguments)
+    if regexcheck(arguments.port):
+        conduct_scan(arguments)
